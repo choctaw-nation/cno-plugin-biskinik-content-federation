@@ -1,0 +1,19 @@
+{
+	"name": "choctaw-nation/choctaw-plugin-template",
+	"description": "A plugin template for the Choctaw nation",
+	"type": "project",
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"scripts": {
+		"phpcs": "phpcs --report-full --report-checkstyle=./phpcs-report.xml inc/ index.php",
+		"phpcbf": "phpcbf inc/ index.php"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "*",
+		"php-stubs/acf-pro-stubs": "*"
+	}
+}

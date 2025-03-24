@@ -1,0 +1,29 @@
+{
+	"name": "choctaw-plugin-template",
+	"version": "1.0.1",
+	"description": "Choctaw Plugin template",
+	"prettier": "@wordpress/prettier-config",
+	"browserslist": [
+		"extends @wordpress/browserslist-config"
+	],
+	"author": "Choctaw Nation of Oklahoma",
+	"files": [
+		"dist",
+		"inc",
+		"template-parts",
+		"templates",
+		"readme.md",
+		"LICENSE",
+		"index.php"
+	],
+	"scripts": {
+		"build": "wp-scripts build",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^30.13.0",
+		"webpack-remove-empty-scripts": "^1.0.4"
+	}
+}
