@@ -1,5 +1,5 @@
 {
-	"name": "choctaw-nation/choctaw-plugin-template",
+	"name": "choctaw-nation/biskinik-content-federation",
 	"description": "A plugin template for the Choctaw nation",
 	"type": "project",
 	"config": {
@@ -9,8 +9,8 @@
 		}
 	},
 	"scripts": {
-		"phpcs": "phpcs --report-full --report-checkstyle=./phpcs-report.xml inc/ index.php",
-		"phpcbf": "phpcbf inc/ index.php"
+		"phpcs": "phpcs --report-full --report-checkstyle=./phpcs-report.xml inc/ biskinik-content-federation.php",
+		"phpcbf": "phpcbf inc/ biskinik-content-federation.php"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*",

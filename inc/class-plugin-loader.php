@@ -4,10 +4,10 @@
  *
  * @since 1.0
  * @package ChoctawNation
- * @subpackage
+ * @subpackage BiskinikContentFederation
  */
 
-namespace ChoctawNation;
+namespace ChoctawNation\BiskinikContentFederation;
 
 /** Inits the Plugin */
 class Plugin_Loader {

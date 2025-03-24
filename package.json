@@ -1,6 +1,6 @@
 {
-	"name": "choctaw-plugin-template",
-	"version": "1.0.1",
+	"name": "biskinik-content-federation",
+	"version": "1.0.0",
 	"description": "Choctaw Plugin template",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
@@ -10,8 +10,6 @@
 	"files": [
 		"dist",
 		"inc",
-		"template-parts",
-		"templates",
 		"readme.md",
 		"LICENSE",
 		"index.php"

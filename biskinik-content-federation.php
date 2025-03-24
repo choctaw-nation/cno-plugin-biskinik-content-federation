@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Choctaw Plugin Starter
- * Plugin URI: https://github.com/choctaw-nation/cno-template-plugin
- * Description: Quick Boilerplate for starting a new plugin
- * Version: 1.1.1
+ * Plugin Name: Biskinik Content Federation
+ * Plugin URI: https://github.com/choctaw-nation/cno-plugin-biskinik-content-federation
+ * Description: Federates content from the Nation site to the Biskinik site.
+ * Version: 1.0.0
  * Author: Choctaw Nation of Oklahoma
  * Author URI: https://www.choctawnation.com
  * Text Domain: cno
@@ -11,14 +11,13 @@
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Requires PHP: 8.2
  * Requires at least: 6.6.0
- * Requires Plugins: advanced-custom-fields-pro
  * Tested up to: 6.7.2
  *
  * @package ChoctawNation
- * @subpackage
+ * @subpackage BiskinikContentFederation
  */
 
-use ChoctawNation\Plugin_Loader;
+use ChoctawNation\BiskinikContentFederation\Plugin_Loader;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
