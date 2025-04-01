@@ -44,7 +44,7 @@ class Plugin_Loader {
 	 *
 	 * @var array $posts_to_federate
 	 */
-	private array $posts_to_federate;
+	public array $posts_to_federate;
 
 	/**
 	 * Constructor
@@ -75,7 +75,7 @@ class Plugin_Loader {
 			require_once "{$this->plugin_path}class-{$file}.php";
 		}
 		$this->tax_handler  = new Taxonomy_Handler();
-		$this->api          = new API();
+		$this->api          = new API( $this );
 		$this->options_page = new Options_Page();
 		$this->options_page->register();
 	}
@@ -118,6 +118,7 @@ class Plugin_Loader {
 				error_log( "Failed to fetch ID for {$new_term['title']}" );
 			}
 		}
+		return rest_ensure_response( array('status'=>'success'));
 		// phpcs:enable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 	}
 

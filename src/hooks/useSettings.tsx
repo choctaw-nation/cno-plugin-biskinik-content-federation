@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
-import { useSelect, useDispatch } from '@wordpress/data';
-import { store as noticesStore } from '@wordpress/notices';
+import { useSelect } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
+import useCreateToast from './useCreateToast';
 
 export default function useSettings() {
 	const [ apiKey, setApiKey ] = useState( '' );
 	const [ isLoading, setIsLoading ] = useState( true );
-	const { createNotice } = useDispatch( noticesStore );
+	const createToast = useCreateToast();
 	useEffect( () => {
 		setIsLoading( true );
 		apiFetch( { path: '/wp/v2/settings' } )
@@ -32,23 +32,11 @@ export default function useSettings() {
 			.then( ( settings ) => {
 				if ( settings.cno_biskinik_federated_content ) {
 					setApiKey( settings.cno_biskinik_federated_content );
-
-					createNotice( 'success', 'Settings saved successfully.', {
-						type: 'snackbar',
-						isDismissible: true,
-						actions: [
-							{
-								label: 'Dismiss',
-							},
-						],
-					} );
+					createToast( 'success', 'Settings saved successfully.' );
 				}
 			} )
 			.catch( ( error ) => {
-				createNotice( 'error', `Error saving settings: ${ error }`, {
-					type: 'snackbar',
-					isDismissible: true,
-				} );
+				createToast( 'error', `Error saving settings: ${ error }` );
 			} )
 			.finally( () => {
 				setIsLoading( false );

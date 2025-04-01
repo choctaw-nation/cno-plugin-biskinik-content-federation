@@ -9,6 +9,7 @@
 namespace ChoctawNation\BiskinikContentFederation;
 
 use Exception;
+use WP_REST_Server;
 
 /**
  * API class to handle data fetching
@@ -35,11 +36,53 @@ class API {
 	private string|false $api_key;
 
 	/**
-	 * Constructor
+	 * The endpoint base for the API
+	 *
+	 * @var string $endpoint_base
 	 */
-	public function __construct() {
-		$this->api_key     = get_option( 'cno_biskinik_federated_content' );
-		$this->remote_path = 'https://www.choctawnation.com/wp-json/wp/v2';
+	private string $endpoint_base;
+
+	/**
+	 * The version of the API
+	 *
+	 * @var string $version
+	 */
+	private string $version;
+
+	/**
+	 * The controller for the plugin
+	 *
+	 * @var Plugin_Loader $controller
+	 */
+	private Plugin_Loader $controller;
+
+	/**
+	 * Constructor
+	 *
+	 * @param Plugin_Loader $controller The controller for the plugin
+	 */
+	public function __construct( Plugin_Loader $controller ) {
+		$this->controller    = $controller;
+		$this->api_key       = get_option( 'cno_biskinik_federated_content' );
+		$this->remote_path   = 'https://www.choctawnation.com/wp-json/wp/v2';
+		$this->endpoint_base = 'cno-federated-content';
+		$this->version       = '1';
+
+		// Register the endpoint for generating terms.
+		add_action(
+			'rest_api_init',
+			function () {
+				register_rest_route(
+					"{$this->endpoint_base}/v{$this->version}",
+					'/generate-terms',
+					array(
+						'methods'             => WP_REST_Server::CREATABLE,
+						'callback'            => array( $this->controller, 'generate_terms' ),
+						'permission_callback' => fn() => current_user_can( 'manage_options' ),
+					)
+				);
+			}
+		);
 	}
 
 	/**

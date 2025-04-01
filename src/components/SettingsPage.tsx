@@ -14,10 +14,12 @@ import {
 import SettingsPageHeader from '../ui/SettingsPageHeader';
 import useSettings from '../hooks/useSettings';
 import Notices from '../ui/Notices';
+import usePluginApi from '../hooks/usePluginApi';
 
 export default function SettingsPage() {
 	const { apiKey, isLoading, setApiKey, saveSettings, termsExist } =
 		useSettings();
+	const { generateTerms } = usePluginApi();
 
 	return (
 		<>
@@ -47,13 +49,21 @@ export default function SettingsPage() {
 						title="Generate Taxonomy Terms"
 						initialOpen={ apiKey && ! termsExist }
 					>
+						<p>
+							Generates Taxonomy terms for Chief's Blog and Iti
+							Fabvssa under the newly created{ ' ' }
+							<a href="/wp-admin/edit-tags.php?taxonomy=federated-post">
+								Federated Posts
+							</a>{ ' ' }
+							taxonomy.
+						</p>
 						<PanelRow>
 							<Flex style={ { width: 'auto' } }>
 								<FlexItem>
 									<Button
 										disabled={ isLoading }
 										variant="primary"
-										onClick={ saveSettings }
+										onClick={ generateTerms }
 										__next40pxDefaultSize
 									>
 										Generate Terms
