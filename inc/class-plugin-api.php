@@ -13,6 +13,7 @@ use DateTime;
 use Exception;
 use stdClass;
 use WP_Post;
+use WP_Query;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -262,7 +263,7 @@ class Plugin_API {
 	}
 
 	/**
-	 * Fetches the latest post for a given term
+	 * Fetches the latest post for a given term from the CNO site
 	 *
 	 * @param array $term The term to fetch the latest post for
 	 * @return stdClass The latest post as a stdClass
@@ -294,40 +295,20 @@ class Plugin_API {
 	 * @return WP_Post|false The existing post if found, false otherwise
 	 */
 	private function post_exists( stdClass $latest_post ): WP_Post|false {
-		$federated_posts = $this->get_existing_federated_posts();
-		if ( ! $federated_posts ) {
-			return false;
-		}
-		foreach ( $federated_posts as $post ) {
-			$cno_id = (int) get_post_meta( $post->ID, 'cno_post_id', true );
-			if ( $cno_id === $latest_post->id ) {
-				return $post;
-			}
+		$query = new WP_Query( array(
+			'post_type'      => 'post',
+			'post_status'    => 'publish',
+			'meta_query'     => array(
+				array(
+					'key'     => 'cno_post_id',
+					'value'   => (int) $latest_post->id,
+					'compare' => '=',
+				),
+			),
+		) );
+		if ( $query->have_posts() ) {
+			return $query->posts[0];
 		}
 		return false;
-	}
-
-
-	/**
-	 * Gets the existing federated posts
-	 *
-	 * @return ?\WP_Post[] The existing federated posts
-	 */
-	private function get_existing_federated_posts(): ?array {
-		$transient_id = 'cno_federated_posts';
-		$cached_posts = get_transient( $transient_id );
-		if ( $cached_posts ) {
-			return $cached_posts;
-		}
-		$federated_posts = get_posts(
-			array(
-				'post_type' => 'post',
-				'taxonomy'  => $this->tax_id,
-				'order'     => 'DESC',
-				'orderby'   => 'date',
-			)
-		);
-		set_transient( $transient_id, $federated_posts, 12 * HOUR_IN_SECONDS );
-		return empty( $federated_posts ) ? null : $federated_posts;
 	}
 }
