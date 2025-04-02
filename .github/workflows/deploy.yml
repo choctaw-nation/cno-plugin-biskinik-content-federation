@@ -1,0 +1,14 @@
+name: Deploy and Release
+on:
+    push:
+        branches: [main]
+
+jobs:
+    deploy-release:
+        name: Deploy and release
+        if: github.ref == 'refs/heads/main'
+        uses: choctaw-nation/shared-github-actions/.github/workflows/deploy-release.yml@1.1.0
+        with:
+            should_build: false
+            plugin_name: biskinik-content-federation
+        secrets: inherit

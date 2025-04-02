@@ -12,7 +12,7 @@
 		"inc",
 		"readme.md",
 		"LICENSE",
-		"index.php"
+		"biskinik-content-federation.php"
 	],
 	"scripts": {
 		"build": "wp-scripts build",

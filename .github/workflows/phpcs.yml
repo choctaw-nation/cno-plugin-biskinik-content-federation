@@ -1,0 +1,61 @@
+name: PHPCS check
+on:
+    pull_request:
+    # Allow manually triggering the workflow.
+    workflow_dispatch:
+
+# Cancel all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    check-changes:
+        runs-on: ubuntu-latest
+        outputs:
+            changed_files: ${{ steps.check-php-files.outputs.changed_files }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Check for PHP file changes
+              id: check-php-files
+              run: |
+                  git fetch origin ${{ github.base_ref }}
+                  git fetch origin ${{ github.head_ref }}
+                  CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} -- | grep '\.php$' || true)
+                  if [ -z "$CHANGED_FILES" ]; then
+                      echo "No changed files"
+                      echo "changed_files=false" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "PHP files changed"
+                      echo "changed_files=true" >> "$GITHUB_OUTPUT"
+                  fi
+
+    phpcs:
+        needs: check-changes
+        if: needs.check-changes.outputs.changed_files  == 'true'
+        uses: choctaw-nation/shared-github-actions/.github/workflows/phpcs.yml@main
+
+    get-previous-status:
+        needs: check-changes
+        if: needs.check-changes.outputs.changed_files == 'false'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get previous PHPCS status
+              run: |
+                  echo "No PHP files changed. Retrieving previous PHPCS status..."
+
+    final-check:
+        needs: [phpcs, get-previous-status]
+        runs-on: ubuntu-latest
+        if: always()
+        steps:
+            - name: Ensure at least one job passed
+              run: |
+                  if [[ "${{ needs.phpcs.result }}" == "success" || "${{ needs.get-previous-status.result }}" == "success" ]]; then
+                      echo "Checks passed."
+                  else 
+                        echo "Checks failed."
+                        exit 1
+                  fi

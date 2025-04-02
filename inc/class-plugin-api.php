@@ -295,17 +295,19 @@ class Plugin_API {
 	 * @return WP_Post|false The existing post if found, false otherwise
 	 */
 	private function post_exists( stdClass $latest_post ): WP_Post|false {
-		$query = new WP_Query( array(
-			'post_type'      => 'post',
-			'post_status'    => 'publish',
-			'meta_query'     => array(
-				array(
-					'key'     => 'cno_post_id',
-					'value'   => (int) $latest_post->id,
-					'compare' => '=',
+		$query = new WP_Query(
+			array(
+				'post_type'   => 'post',
+				'post_status' => 'publish',
+				'meta_query'  => array(
+					array(
+						'key'     => 'cno_post_id',
+						'value'   => (int) $latest_post->id,
+						'compare' => '=',
+					),
 				),
-			),
-		) );
+			)
+		);
 		if ( $query->have_posts() ) {
 			return $query->posts[0];
 		}
