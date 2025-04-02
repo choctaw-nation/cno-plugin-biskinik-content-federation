@@ -1,10 +1,10 @@
-import React from '@wordpress/element';
+import React, { memo } from '@wordpress/element';
 import {
 	__experimentalHeading as Heading,
 	__experimentalText as Text,
 } from '@wordpress/components';
 
-export default function SettingsPageHeader() {
+const SettingsPageHeader = memo( () => {
 	return (
 		<header style={ { marginBlock: 20 } }>
 			<Heading>Federated Content Settings</Heading>
@@ -14,4 +14,5 @@ export default function SettingsPageHeader() {
 			</Text>
 		</header>
 	);
-}
+} );
+export default SettingsPageHeader;

@@ -1,5 +1,6 @@
 import { useDispatch } from '@wordpress/data';
 import { store as noticesStore } from '@wordpress/notices';
+import type { WPNoticeAction } from '@wordpress/notices/build-types/store/actions';
 
 export default function useCreateToast() {
 	const { createNotice } = useDispatch( noticesStore );
@@ -7,14 +8,11 @@ export default function useCreateToast() {
 	const createToast = (
 		status: 'info' | 'warning' | 'error' | 'success',
 		message: string,
-		actions: [
-			{
-				label: string;
-				url?: string;
-			},
-		] = [
+		actions: WPNoticeAction[] = [
 			{
 				label: 'Dismiss',
+				url: null,
+				onClick: null,
 			},
 		]
 	) => {

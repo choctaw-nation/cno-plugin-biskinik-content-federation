@@ -19,35 +19,43 @@ import usePluginApi from '../hooks/usePluginApi';
 export default function SettingsPage() {
 	const { apiKey, isLoading, setApiKey, saveSettings, termsExist } =
 		useSettings();
-	const { generateTerms } = usePluginApi();
-
+	const { generateTerms, fetchPosts, nextFetch } = usePluginApi();
 	return (
 		<>
 			<SettingsPageHeader />
 			<Panel>
-				<PanelBody
-					title="API Key"
-					initialOpen={ apiKey ? false : true }
-				>
+				<PanelBody title="API Key" initialOpen={ '' === apiKey }>
 					<PanelRow>
-						<div style={ { width: '100%' } }>
-							<TextControl
-								__nextHasNoMarginBottom
-								__next40pxDefaultSize
-								label="Insert API Key"
-								type="input"
-								placeholder="Api key..."
-								value={ apiKey || '' }
-								disabled={ isLoading }
-								onChange={ ( value ) => setApiKey( value ) }
-							/>
-						</div>
+						<Flex style={ { alignItems: 'flex-end' } }>
+							<FlexItem style={ { flexGrow: 1 } }>
+								<TextControl
+									__nextHasNoMarginBottom
+									__next40pxDefaultSize
+									label="Insert API Key"
+									type="text"
+									placeholder="Api key..."
+									value={ apiKey || '' }
+									disabled={ isLoading }
+									onChange={ ( value ) => setApiKey( value ) }
+								/>
+							</FlexItem>
+							<FlexItem>
+								<Button
+									disabled={ isLoading }
+									variant="primary"
+									onClick={ saveSettings }
+									__next40pxDefaultSize
+								>
+									Update API Key
+								</Button>
+							</FlexItem>
+						</Flex>
 					</PanelRow>
 				</PanelBody>
-				{ apiKey && ! termsExist && (
+				{ ! isLoading && '' !== apiKey && ! termsExist && (
 					<PanelBody
 						title="Generate Taxonomy Terms"
-						initialOpen={ apiKey && ! termsExist }
+						initialOpen={ '' !== apiKey && ! termsExist }
 					>
 						<p>
 							Generates Taxonomy terms for Chief's Blog and Iti
@@ -77,7 +85,7 @@ export default function SettingsPage() {
 					<PanelBody title="Fetch Posts" initialOpen={ true }>
 						<p>
 							Next Fetch Scheduled:{ ' ' }
-							{ new Date().toLocaleString( 'en-US' ) }
+							{ nextFetch || 'Not Scheduled' }
 						</p>
 						<PanelRow>
 							<Flex style={ { width: 'auto' } }>
@@ -85,10 +93,24 @@ export default function SettingsPage() {
 									<Button
 										disabled={ isLoading }
 										variant="primary"
-										onClick={ saveSettings }
+										onClick={ () =>
+											fetchPosts( 'chiefs-blog' )
+										}
 										__next40pxDefaultSize
 									>
-										Fetch Posts
+										Fetch Chief's Blog Posts
+									</Button>
+								</FlexItem>
+								<FlexItem>
+									<Button
+										disabled={ isLoading }
+										variant="secondary"
+										onClick={ () =>
+											fetchPosts( 'iti-fabvssa' )
+										}
+										__next40pxDefaultSize
+									>
+										Fetch Iti Fabvssa Posts
 									</Button>
 								</FlexItem>
 							</Flex>

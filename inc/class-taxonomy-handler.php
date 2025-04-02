@@ -9,7 +9,7 @@
 namespace ChoctawNation\BiskinikContentFederation;
 
 /**
- * Handles the Taxonomy
+ * Registers the `federated-post` taxonomy and its needed ACF fields
  */
 class Taxonomy_Handler {
 	/**
