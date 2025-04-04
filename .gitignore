@@ -9,3 +9,6 @@
 # build files
 /dist
 *.zip
+
+# logs and reports
+phpcs-report.xml

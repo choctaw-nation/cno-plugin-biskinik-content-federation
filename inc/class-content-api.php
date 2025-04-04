@@ -87,7 +87,7 @@ class Content_API {
 			$body = json_decode( $body );
 			return $body[0]->id ?? false;
 		} catch ( Exception $e ) {
-			error_log( 'Error fetching term ID: ' . $e->getMessage() );
+			error_log( 'Error fetching term ID: ' . $e->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 			return false;
 		}
 	}
