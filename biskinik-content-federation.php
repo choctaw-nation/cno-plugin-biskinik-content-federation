@@ -3,7 +3,7 @@
  * Plugin Name: Biskinik Content Federation
  * Plugin URI: https://github.com/choctaw-nation/cno-plugin-biskinik-content-federation
  * Description: Federates content from the Nation site to the Biskinik site.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Choctaw Nation of Oklahoma
  * Author URI: https://www.choctawnation.com
  * Text Domain: cno

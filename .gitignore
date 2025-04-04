@@ -1,5 +1,14 @@
+# packages
 /node_modules
-.DS_Store
 /vendor
+
+# macOS files
+.DS_Store
 /.DS_Store
+
+# build files
 /dist
+*.zip
+
+# logs and reports
+phpcs-report.xml

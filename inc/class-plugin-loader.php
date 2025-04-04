@@ -31,7 +31,35 @@ class Plugin_Loader {
 	 */
 	public function __construct() {
 		$this->load_files();
+		$this->handle_redirection();
 		add_action( 'admin_init', array( $this, 'activation_redirection' ) );
+	}
+
+	/**
+	 * Handles the redirection for federated post content
+	 */
+	public function handle_redirection() {
+		add_filter(
+			'allowed_redirect_hosts',
+			fn( $hosts ) => array( ...$hosts, 'www.choctawnation.com' )
+		);
+		add_filter(
+			'template_include',
+			function ( $template ) {
+				if ( is_singular() ) {
+					$post_id = get_the_ID();
+					$terms   = get_the_terms( $post_id, 'federated-post' );
+					if ( $terms && ! is_wp_error( $terms ) ) {
+						$term_slug     = $terms[0]->slug;
+						$post_slug     = get_post_field( 'post_name', $post_id );
+						$original_post = "https://www.choctawnation.com/news/{$term_slug}/{$post_slug}";
+						wp_safe_redirect( $original_post, 301 );
+						exit;
+					}
+				}
+				return $template;
+			}
+		);
 	}
 
 	/**
