@@ -180,8 +180,9 @@ class Plugin_API {
 			}
 		}
 		foreach ( $term_ids as $term ) {
-			$latest_post   = $this->fetch_latest_post( $term );
-			$existing_post = $this->post_exists( $latest_post );
+			$latest_post    = $this->fetch_latest_post( $term );
+			$featured_media = $latest_post->_embedded->{'wp:featuredmedia'}[0];
+			$existing_post  = $this->post_exists( $latest_post );
 			if ( $existing_post ) {
 				wp_update_post(
 					array(
@@ -190,6 +191,16 @@ class Plugin_API {
 						'post_date'  => $latest_post->date,
 					)
 				);
+				$featured_image_attached = $this->attach_featured_image( $existing_post->ID, $featured_media );
+				if ( ! $featured_image_attached ) {
+					return new WP_REST_Response(
+						array(
+							'status'  => 'warning',
+							'message' => "“{$latest_post->title->rendered}” was created, but failed to attach featured image.",
+						),
+						500
+					);
+				}
 				return rest_ensure_response(
 					array(
 						'status'  => 'success',
@@ -220,6 +231,16 @@ class Plugin_API {
 				);
 			}
 			wp_set_object_terms( $post_id, array( $term['term']->term_id ), $this->tax_id );
+			$featured_image_attached = $this->attach_featured_image( $post_id, $featured_media );
+			if ( ! $featured_image_attached ) {
+				return new WP_REST_Response(
+					array(
+						'status'  => 'warning',
+						'message' => "{$latest_post->title->rendered} created, but failed to attach featured image.",
+					),
+					500
+				);
+			}
 		}
 		$this->schedule_cron_event();
 		return rest_ensure_response(
@@ -228,6 +249,24 @@ class Plugin_API {
 				'message' => 'Posts created',
 			)
 		);
+	}
+
+	/**
+	 * Attaches the featured image to the post
+	 *
+	 * @param int      $post_id        The post ID
+	 * @param stdClass $featured_media  The featured media stdClass
+	 */
+	private function attach_featured_image( int $post_id, stdClass $featured_media ): bool|int {
+		if ( empty( $featured_media ) ) {
+			return false;
+		}
+		$image_url     = $featured_media->media_details->sizes->full->source_url;
+		$attachment_id = $this->content_api->upload_featured_image( $image_url, $post_id );
+		if ( is_wp_error( $attachment_id ) || false === $attachment_id ) {
+			return false;
+		}
+		return set_post_thumbnail( $post_id, $attachment_id );;
 	}
 
 	/**
