@@ -4,6 +4,10 @@ Federates content from the nation site to the Biskinik Site
 
 # Changelog
 
+## v1.2.1
+
+-   Fixed: Build files now get built in the correct directory, which fixes the Github Action
+
 ## v1.2.0
 
 -   Updated: Federated content now grabs featured image

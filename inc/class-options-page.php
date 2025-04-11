@@ -53,10 +53,10 @@ class Options_Page {
 		}
 		$file_name  = 'cno-plugin-biskinik-content-federation';
 		$base_path  = __DIR__;
-		$asset_file = require_once plugin_dir_path( $base_path ) . "dist/{$file_name}.asset.php";
+		$asset_file = require_once plugin_dir_path( $base_path ) . "build/{$file_name}.asset.php";
 		wp_enqueue_script(
 			$file_name,
-			plugin_dir_url( $base_path ) . "dist/{$file_name}.js",
+			plugin_dir_url( $base_path ) . "build/{$file_name}.js",
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			array( 'strategy' => 'defer' )

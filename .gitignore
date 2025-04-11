@@ -7,7 +7,7 @@
 /.DS_Store
 
 # build files
-/dist
+/build
 *.zip
 
 # logs and reports

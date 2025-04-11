@@ -13,7 +13,7 @@ module.exports = {
 			extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
 		},
 		output: {
-			path: __dirname + `/dist`,
+			path: __dirname + `/build`,
 			filename: `[name].js`,
 		},
 		plugins: [
