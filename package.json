@@ -8,7 +8,7 @@
 	],
 	"author": "Choctaw Nation of Oklahoma",
 	"files": [
-		"dist",
+		"build",
 		"inc",
 		"readme.md",
 		"LICENSE",
