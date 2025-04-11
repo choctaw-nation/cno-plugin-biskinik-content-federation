@@ -10,6 +10,7 @@
 namespace ChoctawNation\BiskinikContentFederation;
 
 use Exception;
+use WP_Error;
 
 /**
  * Content API
@@ -100,7 +101,7 @@ class Content_API {
 	 * @return array|\WP_Error The latest post, or false on failure
 	 */
 	public function fetch_latest_post( string|int $term_id, string $taxonomy ) {
-		$response = wp_remote_get( "{$this->remote_path}/news?{$taxonomy}={$term_id}&order=desc&orderby=date&_fields=id,title,link,status,date&per_page=1" );
+		$response = wp_remote_get( "{$this->remote_path}/news?{$taxonomy}={$term_id}&order=desc&orderby=date&_fields=id,title,link,status,date,_links.wp:featuredmedia,_embedded&per_page=1&_embed=wp:featuredmedia" );
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
@@ -109,5 +110,44 @@ class Content_API {
 			return $body;
 		}
 		return json_decode( $body );
+	}
+
+	/**
+	 * Uploads the featured image to the media library
+	 *
+	 * @param string $image_url The URL of the image to upload
+	 * @param int    $post_id  The ID of the post to attach the image to
+	 * @return int|WP_Error The ID of the attachment, or a WP_Error object on failure
+	 */
+	public function upload_featured_image( string $image_url, int $post_id ): int|WP_Error {
+		// Include required WordPress files for media handling
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+		require_once ABSPATH . 'wp-admin/includes/media.php';
+
+		// Fetch the image and upload to media library
+		$tmp_file = download_url( $image_url );
+
+		if ( is_wp_error( $tmp_file ) ) {
+			return $tmp_file;
+		}
+
+		// Get the file name and type
+		$file = array(
+			'name'     => basename( $image_url ), // Extract file name
+			'type'     => mime_content_type( $tmp_file ), // Get MIME type
+			'tmp_name' => $tmp_file, // Temporary file
+			'error'    => 0,
+			'size'     => filesize( $tmp_file ),
+		);
+
+		// Upload the file to the media library
+		$attachment_id = media_handle_sideload( $file, $post_id );
+
+		if ( is_wp_error( $attachment_id ) ) {
+			wp_delete_file( $tmp_file );
+		}
+		wp_generate_attachment_metadata( $attachment_id, $tmp_file );
+		return $attachment_id;
 	}
 }

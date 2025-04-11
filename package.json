@@ -1,6 +1,6 @@
 {
 	"name": "biskinik-content-federation",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Choctaw Plugin template",
 	"prettier": "@wordpress/prettier-config",
 	"browserslist": [
@@ -21,7 +21,7 @@
 		"start": "wp-scripts start"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.13.0",
+		"@wordpress/scripts": "^30.14.1",
 		"webpack-remove-empty-scripts": "^1.0.4"
 	},
 	"dependencies": {
