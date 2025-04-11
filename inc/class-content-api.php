@@ -10,6 +10,7 @@
 namespace ChoctawNation\BiskinikContentFederation;
 
 use Exception;
+use stdClass;
 use WP_Error;
 
 /**
@@ -115,16 +116,17 @@ class Content_API {
 	/**
 	 * Uploads the featured image to the media library
 	 *
-	 * @param string $image_url The URL of the image to upload
-	 * @param int    $post_id  The ID of the post to attach the image to
+	 * @param stdClass $featured_media The attachment object from the Nation site
+	 * @param int      $post_id  The ID of the post to attach the image to
 	 * @return int|WP_Error The ID of the attachment, or a WP_Error object on failure
 	 */
-	public function upload_featured_image( string $image_url, int $post_id ): int|WP_Error {
+	public function upload_featured_image( stdClass $featured_media, int $post_id ): int|WP_Error {
 		// Include required WordPress files for media handling
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/media.php';
-
+		$image_url       = $featured_media->source_url;
+		$remote_image_id = $featured_media->id;
 		// Fetch the image and upload to media library
 		$tmp_file = download_url( $image_url );
 
@@ -148,6 +150,7 @@ class Content_API {
 			wp_delete_file( $tmp_file );
 		}
 		wp_generate_attachment_metadata( $attachment_id, $tmp_file );
+		update_post_meta( $attachment_id, 'remote_image_id', $remote_image_id );
 		return $attachment_id;
 	}
 }

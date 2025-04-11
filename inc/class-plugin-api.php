@@ -261,8 +261,18 @@ class Plugin_API {
 		if ( empty( $featured_media ) ) {
 			return false;
 		}
-		$image_url     = $featured_media->media_details->sizes->full->source_url;
-		$attachment_id = $this->content_api->upload_featured_image( $image_url, $post_id );
+		$existing_attachment = get_posts(
+			array(
+				'post_type'  => 'attachment',
+				'meta_key'   => 'remote_image_id',
+				'meta_value' => $featured_media->id,
+			)
+		);
+
+		if ( ! empty( $existing_attachment ) ) {
+			return true;
+		}
+		$attachment_id = $this->content_api->upload_featured_image( $featured_media, $post_id );
 		if ( is_wp_error( $attachment_id ) || false === $attachment_id ) {
 			return false;
 		}
