@@ -266,7 +266,7 @@ class Plugin_API {
 		if ( is_wp_error( $attachment_id ) || false === $attachment_id ) {
 			return false;
 		}
-		return set_post_thumbnail( $post_id, $attachment_id );;
+		return set_post_thumbnail( $post_id, $attachment_id );
 	}
 
 	/**

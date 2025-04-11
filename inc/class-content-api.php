@@ -114,6 +114,10 @@ class Content_API {
 
 	/**
 	 * Uploads the featured image to the media library
+	 *
+	 * @param string $image_url The URL of the image to upload
+	 * @param int    $post_id  The ID of the post to attach the image to
+	 * @return int|WP_Error The ID of the attachment, or a WP_Error object on failure
 	 */
 	public function upload_featured_image( string $image_url, int $post_id ): int|WP_Error {
 		// Include required WordPress files for media handling
@@ -125,7 +129,7 @@ class Content_API {
 		$tmp_file = download_url( $image_url );
 
 		if ( is_wp_error( $tmp_file ) ) {
-			return $tmp_file; // Return false if download failed
+			return $tmp_file;
 		}
 
 		// Get the file name and type
@@ -140,11 +144,10 @@ class Content_API {
 		// Upload the file to the media library
 		$attachment_id = media_handle_sideload( $file, $post_id );
 
-		// Check if upload was successful
 		if ( is_wp_error( $attachment_id ) ) {
-			wp_delete_file( $tmp_file ); // Remove temporary file
+			wp_delete_file( $tmp_file );
 		}
-		wp_generate_attachment_metadata($attachment_id, $tmp_file); // Generate metadata for the attachment
-		return $attachment_id; // Return attachment ID or error
+		wp_generate_attachment_metadata( $attachment_id, $tmp_file );
+		return $attachment_id;
 	}
 }
