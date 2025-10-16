@@ -7,7 +7,7 @@ jobs:
     deploy-release:
         name: Deploy and release
         if: github.ref == 'refs/heads/main'
-        uses: choctaw-nation/shared-github-actions/.github/workflows/deploy-release.yml@1.1.0
+        uses: choctaw-nation/shared-github-actions/.github/workflows/deploy-release.yml@main
         with:
             should_build: true
             plugin_name: biskinik-content-federation
