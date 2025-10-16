@@ -4,6 +4,10 @@ Federates content from the nation site to the Biskinik Site
 
 # Changelog
 
+## v1.2.3 - [October 16, 2025]
+
+-   Chore: Update packages
+
 ## v1.2.2
 
 -   Fixed: Fetch requests no longer insert copies of the same media item
