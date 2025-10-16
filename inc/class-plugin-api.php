@@ -59,6 +59,13 @@ class Plugin_API {
 	private Content_API $content_api;
 
 	/**
+	 * The cron event name
+	 *
+	 * @var string $cron_event_name
+	 */
+	private string $cron_event_name;
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $tax_id The Taxonomy id
@@ -66,6 +73,7 @@ class Plugin_API {
 	public function __construct( string $tax_id ) {
 		$this->tax_id            = $tax_id;
 		$this->content_api       = new Content_API();
+		$this->cron_event_name   = 'cno_fetch_latest_cno_posts';
 		$this->posts_to_federate = array(
 			array(
 				'title'    => "Chief's Blog",
@@ -79,6 +87,7 @@ class Plugin_API {
 		$this->endpoint_base     = 'cno-federated-content';
 		$this->version           = '1';
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_action( $this->cron_event_name, array( $this, 'fetch_latest_posts' ) );
 	}
 
 	/**
@@ -155,6 +164,7 @@ class Plugin_API {
 	 * @param ?WP_REST_Request $request The REST request object
 	 */
 	public function fetch_latest_posts( ?WP_REST_Request $request = null ) {
+		$this->schedule_cron_event();
 		$term_ids = array();
 		if ( $request ) {
 			if ( ! $request->get_json_params() ) {
@@ -242,7 +252,6 @@ class Plugin_API {
 				);
 			}
 		}
-		$this->schedule_cron_event();
 		return rest_ensure_response(
 			array(
 				'status'  => 'success',
@@ -305,10 +314,9 @@ class Plugin_API {
 	 * Schedules the cron event to fetch the latest posts
 	 */
 	private function schedule_cron_event() {
-		if ( ! wp_next_scheduled( 'cno_fetch_latest_cno_posts' ) ) {
-			wp_schedule_event( time(), 'daily', 'cno_fetch_latest_cno_posts' );
+		if ( ! wp_next_scheduled( $this->cron_event_name ) ) {
+			wp_schedule_event( time(), 'daily', $this->cron_event_name );
 		}
-		add_action( 'cno_fetch_latest_cno_posts', array( $this->content_api, 'fetch_latest_posts' ) );
 	}
 
 	/**
