@@ -3,7 +3,7 @@ import { fixupConfigRules, includeIgnoreFile } from '@eslint/compat';
 import wordpressConfig from '@wordpress/eslint-plugin';
 
 // eslint-disable-next-line import/no-unresolved
-import { globalIgnores, defineConfig } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 
 import { FlatCompat } from '@eslint/eslintrc';
 import path from 'path';
@@ -26,7 +26,7 @@ export default defineConfig( [
 		)
 	),
 	{
-		files: [ 'wp-content/themes/**/src/js/**/*.{js,ts,jsx,tsx}' ],
+		files: [ './src/**/*.{js,ts,jsx,tsx}' ],
 		languageOptions: {
 			globals: globals.browser,
 		},

@@ -15,8 +15,8 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
-		"typeRoots": [ "./node_modules/@types", "./src/" ]
+		"typeRoots": [ "./node_modules/@types" ]
 	},
-	"include": [ "./src/**/*" ],
+	"include": [ "./src/index.tsx" ],
 	"exclude": [ "node_modules", "vendor", "build" ]
 }

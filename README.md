@@ -7,6 +7,9 @@ Federates content from the nation site to the Biskinik Site
 ## v1.2.3 - [October 16, 2025]
 
 -   Chore: Update packages
+-   Chore: Clean up Lint Errors
+-   Fixed: Cron Job is scheduled correctly
+-   Tweak: Toast URLs point to federated posts (instead of /posts)
 
 ## v1.2.2
 

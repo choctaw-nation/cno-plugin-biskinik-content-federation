@@ -14,10 +14,11 @@
     },
 	"cSpell.words": [
 		"Biskinik",
-		"Fabvssa",
-		"relevanssi",
 		"cnodigital",
-		"featuredmedia"
+		"Fabvssa",
+		"featuredmedia",
+		"relevanssi",
+		"sideload"
 	],
 	"css.format.spaceAroundSelectorSeparator": true,
 	"editor.codeActionsOnSave": {
