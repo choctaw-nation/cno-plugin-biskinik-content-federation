@@ -1,5 +1,5 @@
 // WordPress dependencies
-import React, { createRoot } from '@wordpress/element';
+import { createRoot } from '@wordpress/element';
 import domReady from '@wordpress/dom-ready';
 
 // Component

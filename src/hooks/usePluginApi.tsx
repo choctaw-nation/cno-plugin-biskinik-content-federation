@@ -5,6 +5,7 @@ import { useState } from '@wordpress/element';
 export default function usePluginApi() {
 	const [ nextFetch, setNextFetch ] = useState( '' );
 	const createToast = useCreateToast();
+
 	async function generateTerms() {
 		createToast( 'info', 'Generating terms...', undefined );
 		try {
@@ -22,6 +23,7 @@ export default function usePluginApi() {
 				] );
 			}
 		} catch ( err ) {
+			// eslint-disable-next-line no-console
 			console.error( err );
 			createToast( 'error', `Error generating terms: ${ err.message }` );
 		}
@@ -45,12 +47,13 @@ export default function usePluginApi() {
 				createToast( 'success', response.message, [
 					{
 						label: 'View Posts',
-						url: '/wp-admin/edit.php?post_type=post',
+						url: `/wp-admin/edit.php?federated-post=${ slug }`,
 						onClick: null,
 					},
 				] );
 			}
 		} catch ( err ) {
+			// eslint-disable-next-line no-console
 			console.error( err );
 			createToast( 'error', `Error fetching terms: ${ err.message }` );
 		}
@@ -63,6 +66,7 @@ export default function usePluginApi() {
 			} );
 			return response.message;
 		} catch ( err ) {
+			// eslint-disable-next-line no-console
 			console.error( err );
 			createToast(
 				'error',
@@ -82,7 +86,7 @@ export default function usePluginApi() {
  * Swaps a slug for a title.
  *
  * @param slug the slug to swap
- * @returns
+ * @return
  */
 function slugLookup( slug: string ): string {
 	const slugsToTitles = {

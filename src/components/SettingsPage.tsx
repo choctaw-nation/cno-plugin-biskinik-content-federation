@@ -1,5 +1,4 @@
 // WP Imports
-import React from '@wordpress/element';
 import {
 	Panel,
 	PanelBody,
@@ -58,7 +57,7 @@ export default function SettingsPage() {
 						initialOpen={ '' !== apiKey && ! termsExist }
 					>
 						<p>
-							Generates Taxonomy terms for Chief's Blog and Iti
+							Generates Taxonomy terms for Chief&apos;s Blog and Iti
 							Fabvssa under the newly created{ ' ' }
 							<a href="/wp-admin/edit-tags.php?taxonomy=federated-post">
 								Federated Posts
@@ -98,7 +97,7 @@ export default function SettingsPage() {
 										}
 										__next40pxDefaultSize
 									>
-										Fetch Chief's Blog Posts
+										Fetch Chief&apos;s Blog Posts
 									</Button>
 								</FlexItem>
 								<FlexItem>
