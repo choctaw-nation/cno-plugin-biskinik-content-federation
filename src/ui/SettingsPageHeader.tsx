@@ -1,17 +1,13 @@
-import React, { memo } from '@wordpress/element';
-import {
-	__experimentalHeading as Heading,
-	__experimentalText as Text,
-} from '@wordpress/components';
+import { memo } from '@wordpress/element';
 
 const SettingsPageHeader = memo( () => {
 	return (
 		<header style={ { marginBlock: 20 } }>
-			<Heading>Federated Content Settings</Heading>
-			<Text>
+			<h1>Federated Content Settings</h1>
+			<p>
 				Get the latest content from the Choctaw Nation website to
 				display natively on the site.
-			</Text>
+			</p>
 		</header>
 	);
 } );
