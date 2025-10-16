@@ -11,7 +11,7 @@
 	<exclude-pattern>/docroot/xmlrpc.php</exclude-pattern>
 	<exclude-pattern>/docroot/wp-content/plugins/*</exclude-pattern>
 	<exclude-pattern>/wp-config-sample.php</exclude-pattern>
-	<exclude-pattern>/wp-content/themes/*/dist/*.asset.php</exclude-pattern>
+	<exclude-pattern>/wp-content/themes/*/dist/*</exclude-pattern>
 
 	<!-- Exclude Package Manager directories. -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
@@ -19,26 +19,42 @@
 
 	<!-- Exclude minified Javascript files. -->
 	<exclude-pattern>*.min.js</exclude-pattern>
-	
+
 	<!-- Minimum WordPress Version -->
-	<config name="minimum_wp_version" value="6.0"/>
-	
-	
+	<config name="minimum_wp_version" value="6.7.0"/>
+
+	<!-- Prefix All Globals with CNO -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes">
+				<element value="cno"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Add Custom Capabilities -->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="can_unlock_blocks" />
+			</property>
+		</properties>
+	</rule>
+
+
 	<!-- Include the WordPress-Extra standard. -->
 	<rule ref="WordPress-Extra">
 		<exclude name="WordPress.WP.I18n" />
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
 		<exclude name="WordPress.WP.I18n.TranslatorsCommentWrongStyle" />
-		<exclude name="WordPress.PHP.DontExtract.extract_extract" />
 		<exclude name="WordPress.NamingConventions.PrefixAllGlobals" />
+		<exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
+		<exclude name="Generic.Functions.CallTimePassByReference" />
 	</rule>
 
 	<!-- Let's also check that everything is properly documented. -->
 	<rule ref="WordPress-Docs">
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
 		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
-		<exclude name="WordPress.Security.EscapeOutput.OutputNotEscaped" />
-		<exclude name="PSR2.Files.EndFileNewline.NoneFound" />
 	</rule>
-
 </ruleset>
