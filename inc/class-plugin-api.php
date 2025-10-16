@@ -279,7 +279,7 @@ class Plugin_API {
 		);
 
 		if ( ! empty( $existing_attachment ) ) {
-			return true;
+			return set_post_thumbnail( $post_id, $existing_attachment[0]->ID );
 		}
 		$attachment_id = $this->content_api->upload_featured_image( $featured_media, $post_id );
 		if ( is_wp_error( $attachment_id ) || false === $attachment_id ) {
